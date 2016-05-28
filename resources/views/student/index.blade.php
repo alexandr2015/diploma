@@ -8,30 +8,14 @@
 @stop
 
 @section('content')
-    <div class="row">
-        {!! Form::open([
-            'method' => 'get',
-            'route' => 'student.index'
-        ]) !!}
-            <div class="col-md-6">
-                <div class="page-header">
-                    <h1>
-                        Students
-                    </h1>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Search for..." value="{!! $search !!}">
-                    <span class="input-group-btn">
-                        <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                    </span>
-                </div>
-            </div>
-
-        {!! Form::close() !!}
+    <div class="col-md-6">
+        <div class="page-header">
+            <h1>
+                Students
+            </h1>
+        </div>
     </div>
-
+    @include('blocks.search_user', ['route' => 'student.index'])
     <table class="table">
         <thead>
             <tr>
