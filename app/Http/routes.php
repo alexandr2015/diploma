@@ -22,3 +22,17 @@ Route::group([
         'uses' => 'StudentController@getDataForChart',
     ]);
 });
+
+Route::group([
+    'prefix' => 'question',
+], function () {
+    Route::get('/', [
+        'as' => 'question.index',
+        'uses' => 'QuestionController@index',
+    ]);
+
+    Route::get('/{question_id}', [
+        'as' => 'question.show',
+        'uses' => 'QuestionController@show',
+    ]);
+});

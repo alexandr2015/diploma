@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Question;
 use App\Models\Response;
 use App\Models\Student;
 use Illuminate\Console\Command;
@@ -42,7 +43,7 @@ class ParseExcel extends Command
         $file = storage_path('files/1111.csv');
         $fileData = array_map('str_getcsv', file($file));
         unset($fileData[0]);
-        $count = 0;
+        $bar = $this->output->createProgressBar(count($fileData));
         foreach ($fileData as $item) {
             $student = Student::where('first_name', $item[10])->where('last_name', $item[9])->first();
             if (is_null($student)) {
@@ -51,19 +52,32 @@ class ParseExcel extends Command
                     'last_name' => $item[9],
                 ]);
             }
-            $student->responses()->create([
-                'now_a' => $item[1],
-                'now_b' => $item[2],
-                'now_c' => $item[3],
-                'now_d' => $item[4],
-                'future_a' => $item[5],
-                'future_b' => $item[6],
-                'future_c' => $item[7],
-                'future_d' => $item[8],
-                'question_id' => $item[0],
-            ]);
+            $question = Question::where('question_id', $item[0])->first();
+            if (is_null($question)) {
+                $question = Question::create([
+                    'question_id' => $item[0],
+                ]);
+            }
 
-            echo "count - " . $count++ . "\n";
+            $response = Response::where('question_id', $question->id)
+                ->where('student_id', $student->id)->first();
+            if (is_null($response)) {
+                $student->responses()->create([
+                    'now_a' => $item[1],
+                    'now_b' => $item[2],
+                    'now_c' => $item[3],
+                    'now_d' => $item[4],
+                    'future_a' => $item[5],
+                    'future_b' => $item[6],
+                    'future_c' => $item[7],
+                    'future_d' => $item[8],
+                    'question_id' => $question->id,
+                ]);
+            }
+
+            $bar->advance();
         }
+
+        $bar->advance();
     }
 }
