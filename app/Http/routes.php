@@ -16,4 +16,9 @@ Route::group([
         'as' => 'student.show',
         'uses' => 'StudentController@show',
     ]);
+
+    Route::post('/ajax/{user_id}/{question_id}', [
+        'as' => 'student.show.getDataForChart',
+        'uses' => 'StudentController@getDataForChart',
+    ]);
 });

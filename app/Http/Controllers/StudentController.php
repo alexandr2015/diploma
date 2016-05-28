@@ -34,11 +34,20 @@ class StudentController extends Controller
 
     public function show($id)
     {
-        $student = $this->studentRepository->find($id);
+        $student = $this->studentRepository->with(['responses' => function ($query) {
+            $query->groupBy('question_id');
+        }])->find($id);
 
         return view('student.show', [
             'student' => $student,
-            'responses' => $student->avg(),
+//            'responses' => $student->avg(),
         ]);
+    }
+
+    public function getDataForChart($userId, $questionId)
+    {
+        $student = $this->studentRepository->find($userId);
+
+        return response()->json($student->avg($questionId));
     }
 }

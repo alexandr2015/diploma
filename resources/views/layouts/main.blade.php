@@ -6,6 +6,8 @@
     <title>@yield('title')</title>
 </head>
 <body>
+    <script src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
     <div class="row">
         <div class="col-md-2">
             <ul class="list-group">
@@ -19,7 +21,6 @@
             @yield('content')
         </div>
     </div>
-    <script src="/js/jquery-1.12.4.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+
 </body>
 </html>
