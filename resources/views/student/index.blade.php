@@ -36,7 +36,6 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Last name</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -45,10 +44,9 @@
                 <tr>
                     <td>
                         <a href="{!! route('student.show', [$student->id]) !!}">
-                            {!! $student->first_name !!}
+                            {!! $student->getFullName() !!}
                         </a>
                     </td>
-                    <td>{!! $student->last_name !!}</td>
                     <td></td>
                 </tr>
             @endforeach
