@@ -4,7 +4,10 @@ function printChart(url)
         method: "POST",
         url: url,
         success: function (res) {
-            var canvas = document.querySelector('#graph').getContext('2d');
+
+            var canvas = document.querySelector('#graph');
+            var context = canvas.getContext('2d');
+            context.restore();
             var data = {
                 labels: ["A", "Гнучкисть", "B", "Зовнишний", "C", "Контроль", "D", "Внутришний"],
                 datasets: [
@@ -42,7 +45,7 @@ function printChart(url)
                     }
                 }
             };
-            myRadarChart = new Chart(canvas, {
+            myRadarChart = new Chart(context, {
                 type: 'radar',
                 data: data,
                 options: options

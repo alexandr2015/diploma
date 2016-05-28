@@ -13,13 +13,16 @@
 @stop
 
 @section('content')
-    @include('blocks.search_user', ['route' => ['question.show', $question->id]])
-
-    @foreach($students as $student)
-        <button  class="btn btn-sm btn-primary" id="question" data-id="{!! $student->id !!}">
-            {!! $student->getFullName() !!}
-        </button>
-    @endforeach
+    <div class="row">
+        @include('blocks.search_user', ['route' => ['question.show', $question->id]])
+    </div>
+    <div class="row">
+        @foreach($students as $student)
+            <button  class="btn btn-sm btn-primary" id="question" data-id="{!! $student->id !!}">
+                {!! $student->getFullName() !!}
+            </button>
+        @endforeach
+    </div>
     {!! $students->render() !!}
 
     @include('blocks.chart')
