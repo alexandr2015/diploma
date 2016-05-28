@@ -19,9 +19,10 @@
             {!! $response->question_id !!}
         </button>
     @endforeach
-    <canvas id="graph" width="400" height="400" style="border:1px solid"></canvas>
+    <canvas id="graph"x></canvas>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
     <script>
         $('button#question').click(function () {
             var question_id = $(this).data('number'), user_id = {!! $student->id !!};
@@ -32,29 +33,48 @@
                 success: function (res) {
                     var canvas = document.querySelector('#graph').getContext('2d');
                     var data = {
-                        labels: ["A", "B", "C", "D"],
+                        labels: ["A", "Гнучкисть", "B", "Зовнишний", "C", "Контроль", "D", "Внутришний"],
                         datasets: [
                             {
-                                fillColor : "rgba(100,220,100, 0.7",
-                                strokeColor : "rgba(220,220,220, 0.1",
-                                pointColor : "rgba(220,220,220, 1",
-                                pointStrokeColor : "#fff",
-                                pointHighlightFill : "#fff",
-                                pointHighlightStroke : "rgba(220,220,220,1)",
-                                data: [res.now_a, res.now_b, res.now_c, res.now_d]
+                                label: 'Now',
+                                backgroundColor: "rgba(179,181,198,0.2)",
+                                borderColor: "rgba(179,181,198,1)",
+                                pointBackgroundColor: "rgba(179,181,198,1)",
+                                pointBorderColor: "#fff",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(179,181,198,1)",
+                                data: [res.now_a, res.now_a_b ,res.now_b, res.now_b_c, res.now_c, res.now_c_d, res.now_d, res.now_d_a]
                             },
                             {
-                                fillColor : "rgba(0,220,220, 0.2",
-                                strokeColor : "rgba(220,220,220, 0.1",
-                                pointColor : "rgba(220,220,220, 1",
-                                pointStrokeColor : "#fff",
-                                pointHighlightFill : "#fff",
-                                pointHighlightStroke : "rgba(220,220,220,1)",
-                                data: [res.future_a, res.future_b, res.future_c, res.future_d]
+                                label: 'Future',
+                                backgroundColor: "rgba(255,99,132,0.2)",
+                                borderColor: "rgba(255,99,132,1)",
+                                pointBackgroundColor: "rgba(255,99,132,1)",
+                                pointBorderColor: "#fff",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgba(255,99,132,1)",
+                                data: [res.future_a, res.future_a_b, res.future_b, res.future_b_c,  res.future_c, res.future_c_d,  res.future_d, res.future_d_a]
                             }
                         ]
                     };
-                    new Chart(canvas).Radar(data);
+                    var options = {
+                        scale: {
+                            ticks: {
+                                beginAtZero: true,
+                                scaleOverride:true,
+                                scaleSteps : 10,
+                                scaleStepWidth : 50,
+                                scaleStartValue : 0,
+                                max: 100
+                            }
+                        }
+                    };
+//                    new Chart(canvas).Radar(data);
+                    myRadarChart = new Chart(canvas, {
+                        type: 'radar',
+                        data: data,
+                        options: options
+                    });
 //                    debugger
                 }
             });
