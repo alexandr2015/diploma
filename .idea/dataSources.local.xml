@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - diploma@localhost" uuid="9ea81805-eb4d-4b94-a9e5-b2464f3603a3">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>diploma.*</schema-pattern>
+      <default-schemas>diploma.*</default-schemas>
+    </data-source>
+  </component>
+</project>
