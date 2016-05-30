@@ -10,4 +10,10 @@ class StudentRepository extends BaseRepository
     {
         return Student::class;
     }
+
+    public function orderBy($orderBy)
+    {
+        $this->model = $this->model->orderBy($orderBy);
+        return $this;
+    }
 }

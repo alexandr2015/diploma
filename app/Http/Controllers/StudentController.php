@@ -24,7 +24,7 @@ class StudentController extends Controller
         } else {
             $students = $this->studentRepository;
         }
-        $students = $students->paginate(40);
+        $students = $students->orderBy('first_name')->paginate(40);
 
         return view('student.index', [
             'students' => $students,
