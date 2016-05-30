@@ -1,7 +1,7 @@
 function printChart(url)
 {
     $.ajax({
-        method: "POST",
+        method: "GET",
         url: url,
         success: function (res) {
 

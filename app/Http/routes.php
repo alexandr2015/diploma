@@ -17,7 +17,7 @@ Route::group([
         'uses' => 'StudentController@show',
     ]);
 
-    Route::post('/ajax/{user_id}/{question_id}', [
+    Route::get('/ajax/{user_id}/{question_id?}', [
         'as' => 'student.show.getDataForChart',
         'uses' => 'StudentController@getDataForChart',
     ]);
@@ -34,5 +34,10 @@ Route::group([
     Route::get('/{question_id}', [
         'as' => 'question.show',
         'uses' => 'QuestionController@show',
+    ]);
+
+    Route::get('/get-avg/{question_id}', [
+        'as' => 'question.getAvgAllResponses',
+        'uses' => 'QuestionController@getAvgAllResponses',
     ]);
 });

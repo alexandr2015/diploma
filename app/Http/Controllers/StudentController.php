@@ -44,7 +44,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function getDataForChart($userId, $questionId)
+    public function getDataForChart($userId, $questionId = null)
     {
         $student = $this->studentRepository->find($userId);
 

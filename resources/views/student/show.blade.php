@@ -14,6 +14,9 @@
 
 @section('content')
 
+    <button  class="btn btn-sm btn-primary" id="question" data-number="{!! null !!}">
+        All
+    </button>
     @foreach($student->responses as $response)
         <button class="btn btn-sm btn-primary" id="question" data-number="{!! $response->question_id !!}">
             {!! $response->question_id !!}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MathHelper;
 use App\Http\Requests;
 use App\Repositories\Criteria\Question\QuestiontSearchCriteria;
 use App\Repositories\Criteria\Student\StudentSearchCriteria;
@@ -50,5 +51,23 @@ class QuestionController extends Controller
             'students' => $students,
             'search' => $request->get('search'),
         ]);
+    }
+
+    public function getAvgAllResponses($id)
+    {
+        $question = $this->questionRepository->find($id);
+        $response = $question->getAvgResponses()->toArray();
+
+        $response['now_a_b'] = MathHelper::bisector($response['now_a'], $response['now_b']);
+        $response['now_b_c'] = MathHelper::bisector($response['now_b'], $response['now_c']);
+        $response['now_c_d'] = MathHelper::bisector($response['now_c'], $response['now_d']);
+        $response['now_d_a'] = MathHelper::bisector($response['now_d'], $response['now_a']);
+
+        $response['future_a_b'] = MathHelper::bisector($response['future_a'], $response['future_b']);
+        $response['future_b_c'] = MathHelper::bisector($response['future_b'], $response['future_c']);
+        $response['future_c_d'] = MathHelper::bisector($response['future_c'], $response['future_d']);
+        $response['future_d_a'] = MathHelper::bisector($response['future_d'], $response['future_a']);
+
+        return response()->json($response);
     }
 }
