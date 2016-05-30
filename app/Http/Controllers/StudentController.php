@@ -19,14 +19,13 @@ class StudentController extends Controller
 
     public function index(Requests\BaseRequest $request)
     {
-//        \DB::enableQueryLog();
         if ($request->has('search')) {
             $students = $this->studentRepository->pushCriteria(new StudentSearchCriteria($request->get('search')));
         } else {
             $students = $this->studentRepository;
         }
-        $students = $students->paginate();
-//dd(\DB::getQueryLog());
+        $students = $students->paginate(40);
+
         return view('student.index', [
             'students' => $students,
             'search' => $request->get('search', null),
