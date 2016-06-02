@@ -41,3 +41,7 @@ Route::group([
         'uses' => 'QuestionController@getAvgAllResponses',
     ]);
 });
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
