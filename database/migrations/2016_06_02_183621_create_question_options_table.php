@@ -15,6 +15,7 @@ class CreateQuestionOptionsTable extends Migration
         Schema::create('question_options', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('question_id')->unsigned();
+            $table->text('question_main');
             $table->text('question_a');
             $table->text('question_b');
             $table->text('question_c');
