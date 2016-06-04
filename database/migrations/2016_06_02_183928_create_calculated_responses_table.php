@@ -24,7 +24,7 @@ class CreateCalculatedResponsesTable extends Migration
             $table->decimal('future_b');
             $table->decimal('future_c');
             $table->decimal('future_d');
-            $table->string('time');
+            $table->string('duration');
             $table->softDeletes();
             $table->timestamps();
         });

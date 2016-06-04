@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class Response extends BaseModel
+class CalculatedResponse extends BaseModel
 {
     protected $visible = [
         'user_id',
@@ -14,7 +14,8 @@ class Response extends BaseModel
         'future_b',
         'future_c',
         'future_d',
-        'question_option_id',
+        'question_id',
+        'duration',
     ];
 
     protected $fillable = [
@@ -27,11 +28,7 @@ class Response extends BaseModel
         'future_b',
         'future_c',
         'future_d',
-        'question_option_id',
+        'question_id',
+        'duration',
     ];
-
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
 }
