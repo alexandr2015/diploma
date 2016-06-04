@@ -23,11 +23,24 @@ class QuestionOption extends Model
         'question_c',
         'question_d',
         'question_main',
+        //relations
+        'responses',
+        'responseByUser',
     ];
 
     public function question()
     {
         return $this->belongsTo(Question::class);
+    }
+
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
+
+    public function responseByUser()
+    {
+        return $this->responses()->where('user_id', \Auth::user()->id);
     }
 
 }

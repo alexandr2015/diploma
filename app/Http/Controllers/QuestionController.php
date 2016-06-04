@@ -23,10 +23,12 @@ class QuestionController extends Controller
 
     public function show($id)
     {
-        $question = $this->questionRepository->with(['options'])->find($id);
-dd($question->toArray());
+        $question = $this->questionRepository->with(['options.responseByUser'])->find($id);
+        $question = $question->toArray();
+
         return view('question.show', [
-            'question' => $question->toArray(),
+            'question' => $question,
+            'needUpdate' => (boolean)$question['options'][0]['response_by_user'],
             'startTime' => time(),
         ]);
     }
@@ -34,6 +36,17 @@ dd($question->toArray());
     public function saveQuestionResponse(Requests\BaseRequest $request, $questionId)
     {
         $this->responseRepository->createResponse($request->only([
+            'range',
+            'startTime',
+        ]), $questionId);
+
+
+        return redirect()->back();
+    }
+
+    public function updateQuestionResponse(Requests\BaseRequest $request, $questionId)
+    {
+        $this->responseRepository->updateResponse($request->only([
             'range',
             'startTime',
         ]), $questionId);

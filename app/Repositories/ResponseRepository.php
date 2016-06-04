@@ -16,6 +16,22 @@ class ResponseRepository extends BaseRepository
     {
         $startTime = $data['startTime'];
         $userId = \Auth::user()->id;
+        $savedData = $this->parseData($data['range'], $userId);
+        foreach ($savedData as $item) {
+            unset($item['id']);
+            $this->create($item);
+        }
+        $avgResponse = $this->avgResponse($savedData, count($savedData));
+        $avgResponse['user_id'] = $userId;
+        $avgResponse['question_id'] = $questionId;
+        $avgResponse['duration'] = time() - $startTime;
+        CalculatedResponse::create($avgResponse);
+
+        return true;
+    }
+
+    public function avgResponse($data, $count)
+    {
         $avgResponse = [
             'now_a' => 0,
             'now_b' => 0,
@@ -26,7 +42,34 @@ class ResponseRepository extends BaseRepository
             'future_c' => 0,
             'future_d' => 0,
         ];
-        foreach ($data['range'] as $key => $item) {
+
+        foreach ($data as $item) {
+            $avgResponse['now_a'] += $item['now_a'];
+            $avgResponse['now_b'] += $item['now_b'];
+            $avgResponse['now_c'] += $item['now_c'];
+            $avgResponse['now_d'] += $item['now_d'];
+            $avgResponse['future_a'] += $item['future_a'];
+            $avgResponse['future_b'] += $item['future_b'];
+            $avgResponse['future_c'] += $item['future_c'];
+            $avgResponse['future_d'] += $item['future_d'];
+        }
+        $avgResponse['now_a'] /= $count;
+        $avgResponse['now_b'] /= $count;
+        $avgResponse['now_c'] /= $count;
+        $avgResponse['now_d'] /= $count;
+        $avgResponse['future_a'] /= $count;
+        $avgResponse['future_b'] /= $count;
+        $avgResponse['future_c'] /= $count;
+        $avgResponse['future_d'] /= $count;
+
+        return $avgResponse;
+
+    }
+
+    public function parseData($data, $userId)
+    {
+        $savedData = [];
+        foreach ($data as $key => $item) {
             $nowA = (int)$item['now']['a'];
             $nowB = (int)$item['now']['b'];
             $nowC = 100 - $nowA;
@@ -35,8 +78,8 @@ class ResponseRepository extends BaseRepository
             $futureB = (int)$item['future']['b'];
             $futureC = 100 - $futureA;
             $futureD = 100 - $futureB;
-            $savedData = [
-                'student_id' => $userId,
+            $savedData[] = [
+                'user_id' => $userId,
                 'now_a' => $nowA,
                 'now_b' => $nowB,
                 'now_c' => $nowC,
@@ -46,31 +89,36 @@ class ResponseRepository extends BaseRepository
                 'future_c' => $futureC,
                 'future_d' => $futureD,
                 'question_option_id' => $key,
+                'id' => (isset($item['id'])) ? $item['id'] : false,
             ];
-            $avgResponse['now_a'] += $nowA;
-            $avgResponse['now_b'] += $nowB;
-            $avgResponse['now_c'] += $nowC;
-            $avgResponse['now_d'] += $nowD;
-            $avgResponse['future_a'] += $futureA;
-            $avgResponse['future_b'] += $futureB;
-            $avgResponse['future_c'] += $futureC;
-            $avgResponse['future_d'] += $futureD;
-            $this->create($savedData); // todo add transaction
         }
-        $count = count($data['range']);
-        $avgResponse['now_a'] /= $count;
-        $avgResponse['now_b'] /= $count;
-        $avgResponse['now_c'] /= $count;
-        $avgResponse['now_d'] /= $count;
-        $avgResponse['future_a'] /= $count;
-        $avgResponse['future_b'] /= $count;
-        $avgResponse['future_c'] /= $count;
-        $avgResponse['future_d'] /= $count;
-        $avgResponse['duration'] = time() - $startTime;
-        $avgResponse['user_id'] = $userId;
-        $avgResponse['question_id'] = $questionId;
 
-        CalculatedResponse::create($avgResponse);
+        return $savedData;
+    }
+
+    public function updateResponse(array $data, $questionId)
+    {
+        $startTime = $data['startTime'];
+        $userId = \Auth::user()->id;
+        $savedData = $this->parseData($data['range'], $userId);
+        $avgResponse = $this->avgResponse($savedData, count($savedData));
+
+        $calculatedResponse = CalculatedResponse::where('question_id', $questionId)->where('user_id', $userId)->first();
+        $calculatedResponse->duration += (time() - $startTime);
+        $calculatedResponse->fill($avgResponse);
+        $calculatedResponse->save();
+
+        foreach ($savedData as $item) {
+            if (false !== $item['id']) {
+                $id = $item['id'];
+                unset($item['id']);
+                $this->update($item, $id);
+            } else {
+                unset($item['id']);
+                $this->create($item);
+            }
+        }
+
         return true;
     }
 }

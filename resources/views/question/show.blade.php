@@ -4,14 +4,34 @@
     <link rel="stylesheet" href="/css/jquery-ui.min.css">
     <h1>{!! $question['question'] !!}</h1>
 
-    {!! Form::open([
-        'method' => 'post',
-        'route' => ['question.save_response', $question['id']],
-    ]) !!}
+    @if ($needUpdate)
+        {!! Form::open([
+           'method' => 'put',
+           'route' => ['question.update_response', $question['id']],
+       ]) !!}
+    @else
+        {!! Form::open([
+            'method' => 'post',
+            'route' => ['question.save_response', $question['id']],
+        ]) !!}
+    @endif
+
+
     {!! Form::hidden('startTime', $startTime) !!}
         <table class="table table-hover">
             <tbody>
                 @foreach($question['options'] as $key => $option)
+                    <?php
+                    if ($option['response_by_user']) {
+                        $id = $option['response_by_user'][0]['id'];
+                        $nowA = $option['response_by_user'][0]['now_a'];
+                        $futureA = $option['response_by_user'][0]['future_a'];
+                        $nowB = $option['response_by_user'][0]['future_a'];
+                        $futureB = $option['response_by_user'][0]['future_b'];
+                    } else {
+                        $nowA = $nowB = $futureB = $futureA = $id = null;
+                    }
+                    ?>
                     <tr class="active">
                         <td><b>{!! $key + 1 !!}</b></td>
                         <td colspan="2">{!! $option['question_main'] !!}:</td>
@@ -23,17 +43,19 @@
                         <td><b>A</b></td>
                         <td>{!! $option['question_a'] !!}</td>
                         <td rowspan="2">
-                            <input type="range" name="range[{!! $option['id'] !!}][now][a]" min="0" max="100" step="1">
+                            {!! Form::hidden('range[' . $option['id'] . '][id]' , $id) !!}
+                            <input type="range" name="range[{!! $option['id'] !!}][now][a]" min="0" max="100" step="1"
+                                   value={!! $nowA !!}>
                         </td>
                         <td rowspan="2">
-                            <input type="range" name="range[{!! $option['id'] !!}][future][a]" min="0" max="100" step="1">
+                            <input type="range" name="range[{!! $option['id'] !!}][future][a]" min="0" max="100" step="1"
+                                   value="{!! $futureA !!}">
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td><b>C</b></td>
                         <td>{!! $option['question_c'] !!}</td>
-
                     </tr>
                     <tr>
                         <td></td>

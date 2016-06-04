@@ -5,6 +5,7 @@ namespace App\Models;
 class Response extends BaseModel
 {
     protected $visible = [
+        'id',
         'user_id',
         'now_a',
         'now_b',
