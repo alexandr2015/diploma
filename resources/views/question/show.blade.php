@@ -26,7 +26,7 @@
                         $id = $option['response_by_user'][0]['id'];
                         $nowA = $option['response_by_user'][0]['now_a'];
                         $futureA = $option['response_by_user'][0]['future_a'];
-                        $nowB = $option['response_by_user'][0]['future_a'];
+                        $nowB = $option['response_by_user'][0]['now_b'];
                         $futureB = $option['response_by_user'][0]['future_b'];
                     } else {
                         $nowA = $nowB = $futureB = $futureA = $id = null;
@@ -62,10 +62,12 @@
                         <td><b>B</b></td>
                         <td>{!! $option['question_b'] !!}</td>
                         <td rowspan="2">
-                            <input type="range" name="range[{!! $option['id'] !!}][now][b]" min="0" max="100" step="1">
+                            <input type="range" name="range[{!! $option['id'] !!}][now][b]" min="0" max="100" step="1"
+                                   value="{!! $nowB !!}">
                         </td>
                         <td rowspan="2">
-                            <input type="range" name="range[{!! $option['id'] !!}][future][b]" min="0" max="100" step="1">
+                            <input type="range" name="range[{!! $option['id'] !!}][future][b]" min="0" max="100" step="1"
+                                   value="{!! $futureB !!}">
                         </td>
                     </tr>
                     <tr>
