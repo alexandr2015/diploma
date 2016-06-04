@@ -8,6 +8,11 @@ Route::group([
     'middleware' => 'auth',
 ], function () {
 
+    Route::get('questions', [
+        'as' => 'questions.index',
+        'uses' => 'QuestionController@index',
+    ]);
+
     Route::get('question/{id}', [
         'as' => 'question.show',
         'uses' => 'QuestionController@show'

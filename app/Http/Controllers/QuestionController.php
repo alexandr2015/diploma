@@ -21,6 +21,15 @@ class QuestionController extends Controller
         $this->responseRepository = $responseRepository;
     }
 
+    public function index()
+    {
+        $questions = $this->questionRepository->paginate();
+
+        return view('question.index', [
+            'questions' => $questions,
+        ]);
+    }
+
     public function show($id)
     {
         $question = $this->questionRepository->with(['options.responseByUser'])->find($id);
