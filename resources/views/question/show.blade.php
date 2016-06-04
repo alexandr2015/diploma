@@ -74,34 +74,8 @@
             </div>
         </div>
     {!! Form::close() !!}
+
     <br>
-    <div id="slider_price"></div>
-    <div id='options'>
-        <h3>Цена:</h3>
-        <form method='post'>
-            <label for='price'>
-                <input type="text" name="price" id="price" maxlength="10">
-            </label>
-            <label for='price2'>
-                <input type="text" name="price" id="price2" maxlength="10">
-            </label>
-        </form>
-    </div>
     <br>
-    <script>
-//        $(function() {
-//            $( "#slider-range" ).slider({
-//                range: true,
-//            min: 0,
-//            max: 500,
-//            values: [ 75, 300 ],
-//            slide: function( event, ui ) {
-//                $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
-//            }
-//        });
-//            $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-//            " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-//        });
-    </script>
     <br>
 @stop
